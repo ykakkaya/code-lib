@@ -12,7 +12,9 @@
 $image=$article->image;
             if ($request->hasFile('image')) {
                 $manager = new ImageManager(new Driver());
-                unlink($image);
+                if(file_exists($image)){
+                 unlink($image);
+                }
                 $img = $manager->read($request->file('image'));
                 $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
                 $img = $img->resize(1900, 1267);

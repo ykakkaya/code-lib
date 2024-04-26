@@ -1,0 +1,21 @@
+ if ($request->hasFile('image')) {
+            $manager = new ImageManager(new Driver());
+             $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+            $img = $manager->read($request->file('image'));
+            $img=$img->resize(1900,1267);
+            $img->save(public_path('uploads').'/' . $imageName);
+            $image = 'uploads/' . $imageName;
+        }
+
+////////UPDATE //////////
+
+$image=$article->image;
+            if ($request->hasFile('image')) {
+                $manager = new ImageManager(new Driver());
+                unlink($image);
+                $img = $manager->read($request->file('image'));
+                $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+                $img = $img->resize(1900, 1267);
+                $img->save(public_path('uploads').'/' . $imageName);
+                $image = 'uploads/' . $imageName;
+            };

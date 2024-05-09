@@ -1,0 +1,6 @@
+if($request->hasFile('file')){
+            $img = $request->file('file');
+            $image=$img->store('public/images');
+        };
+//////////////////////////////
+

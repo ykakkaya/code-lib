@@ -1,0 +1,24 @@
+  $image = \Intervention\Image\Facades\Image::make($request->file('static_image'));
+            $width = $image->width();
+            $height = $image->height();
+
+            // Eğer resim 180x300 boyutundan küçükse aspect ratio koruyarak boyutlandır ve kırp
+            if ($width < 180 || $height < 300) {
+                $image->resize(180, 300, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })->fit(180, 300);
+                //->resizeCanvas(180, 300, 'center', false, 'ffffff');
+            } else {
+                // Eğer resim 180x300 boyutundan büyükse sadece kırp
+                $image->fit(180, 300, function ($constraint) {
+                    $constraint->upsize();
+                });
+            }
+
+            $file = clone $image;
+            $newFileName_width = $image->width();
+            $newFileName_height = $image->height();
+            $newFileName=$request->static_image->hashName();
+            // Error Gd $file->storeAs('/blog', $newFileName, 'public'); // Files
+            \Illuminate\Support\Facades\Storage::disk('public')->put('/files/' . $newFileName, $file->encode());

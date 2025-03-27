@@ -1,0 +1,8 @@
+jQuery(document).ready(function($) {
+    $('.stock').each(function() {
+        var stockText = $(this).text().match(/\d+/);
+        if (stockText && parseInt(stockText[0]) > 10) {
+            $(this).text('10+');
+        }
+    });
+});

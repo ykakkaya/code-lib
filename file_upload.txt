@@ -4,3 +4,14 @@ if($request->hasFile('file')){
         };
 //////////////////////////////
 
+if($request->image){
+            if($user->image){
+                Storage::disk('public')->delete($user->image);
+            }
+            
+            $user->image = $request->image->store('images/users', 'public');
+        }
+
+
+<img alt="image" src="{{ $user->image ? asset('storage/' . $user->image) : asset('backend/assets/img/avatar/avatar-1.png') }}"
+            class="rounded-circle profile-widget-picture">

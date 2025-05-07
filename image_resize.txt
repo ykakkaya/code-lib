@@ -1,4 +1,26 @@
- if ($request->hasFile('image')) {
+       if($request->hasFile('image')){
+                if($slider->image){
+                    Storage::disk('public')->delete($slider->image);
+                }
+                $manager = new ImageManager(Driver::class);
+                $filename = time() . '.' . $request->file('image')->getClientOriginalExtension();
+                $image = $manager->read($request->file('image'));
+
+
+                $resizedImage = $image
+                    ->resize(1300, 500, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode(); // varsayılan olarak jpg olarak encode eder
+
+                // Storage'a kaydet
+                Storage::disk('public')->put('images/sliders/' . $filename, $resizedImage);
+                $imagePath = 'images/sliders/' . $filename;
+
+            }
+////////////////////////////////////////////
+if ($request->hasFile('image')) {
             $manager = new ImageManager(new Driver());
              $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
             $img = $manager->read($request->file('image'));
